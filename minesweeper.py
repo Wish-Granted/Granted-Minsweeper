@@ -1,12 +1,9 @@
-#from wishgrantedqol import *
 from tkinterhelper import *
 from google_sheets_intergration_minesweeper import *
 import os
 import time
 import random
 from PIL import Image, ImageTk
-
-#from tkinter import PhotoImage
 
 SCRIPT_DIRECTORY: str = os.path.dirname(os.path.abspath(__file__))
 default_font: str = "Consolas"
@@ -47,52 +44,13 @@ def do_Button_Animation(frame: Frame, button: Label, button_pressed: Label, pres
 
 def do_Closing_Animation(main_frame: Frame, on_finish=lambda: None) -> None:
     widgets: list[Widget] = main_frame.winfo_children()
-    #random.shuffle(widgets)
     def do_Destroy_Next_Widget(index=0):
         if index < len(widgets):
             widgets[index].destroy()
-            #main_frame.after(int(500/len(widgets)), do_Destroy_Next_Widget, index + 1)
             do_Destroy_Next_Widget(index+1)            
         else:
             on_finish()
     do_Destroy_Next_Widget()
-
-def get_user_text_input(text_prompt: str, max_string_length: int) -> str: #DEPRECIATED
-    random_usernames = ["Elias", "Logan", "Dylan", "Lawson", "Olly", "Francia", "Cindy", "Jake", "James", "Xavier", "Daniel", "Eden", "Lachie", "The Awesome Dude", "Wish Granted"]
-    
-    root: Toplevel = Toplevel()
-    root.title("")
-    
-    user_input_var: StringVar = StringVar()
-    user_input_var.set(random.choice(random_usernames))
-
-    def validate_input(new_value):
-        return len(new_value) <= max_string_length
-
-    vcmd = (root.register(validate_input), '%P')
-
-    do_Use_Custom_Window_Title_Bar(root, text_colour="white", background_colour="#333333", font=(default_font, 11))
-
-    label_text_prompt: Label = Label(root, text=text_prompt, font=(default_font, 11))
-    label_text_prompt.pack()
-    frame_input: Frame = Frame(root)
-    frame_input.pack(padx=5, pady=(0,5))
-    text_input: Entry = Entry(frame_input, width=max_string_length, textvariable=user_input_var, validate="key", validatecommand=vcmd)
-    text_input.pack(side="left")
-    done_button: Label = Label(frame_input, text=" done ", font=(default_font, 8), relief=RAISED)
-    done_button.pack(side="right", padx=(2,0))
-
-    done_button.bind("<Button-1>", lambda event: root.destroy())
-
-    screen_dimensions: tuple = (get_dimensions(frame_input)[0], get_dimensions(frame_input)[1]+get_dimensions(label_text_prompt)[1]+26)
-    root.geometry(f"{screen_dimensions[0]}x{screen_dimensions[1]}+{(root.winfo_screenwidth()//2)-(screen_dimensions[0]//2)}+{(root.winfo_screenheight()//2)-(screen_dimensions[1]//2)}")
-    root.wm_minsize(screen_dimensions[0], screen_dimensions[1])
-    root.wm_maxsize(screen_dimensions[0], screen_dimensions[1])
-
-    root.protocol("WM_DELETE_WINDOW", root.destroy)
-    root.wait_window()  
-
-    return user_input_var.get() if user_input_var.get() != "" else "Anonymous"
 
 def do_return_to_menu(root: Tk, main_frame: Frame) -> None:
     userinput = messagebox.askquestion("Return to menu?", "Do you wish to return to the main menu?")
@@ -109,7 +67,6 @@ def run_Welcome(root = None, frame_Window = None) -> None:
 
         root.wm_iconphoto(False, assets["other"]["app_icon"])
         root.title("MinesweeperGranted")
-        #do_Use_Custom_Window_Title_Bar(root, text_colour="white", background_colour="#333333", font=(default_font, 11))
 
         frame_Window = Frame(root, bg="#f0f0f0", border=0, relief=SOLID)
         frame_Window.pack(expand=True, fill="both")
@@ -150,7 +107,7 @@ def run_Welcome(root = None, frame_Window = None) -> None:
 
     def do_Prepare_Game(on_closing=lambda:None):
         root.bind("<Key-Escape>", func=lambda event: do_return_to_menu(root, frame_Window))
-        do_Closing_Animation(main_frame=frame_Window)#, on_finish=on_closing)
+        do_Closing_Animation(main_frame=frame_Window)
 
 
         user_input_var: StringVar = StringVar()
@@ -589,7 +546,7 @@ def run_highscores(root: Tk, frame_window: Frame) -> None:
         frame_highscore_main.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 def run_settings(root: Tk, frame_window: Frame) -> None:
-    ...
+    ... # not implemented
 
 def main() -> None:
     run_Welcome()
