@@ -1,4 +1,4 @@
-from wishgrantedqol import *
+#from wishgrantedqol import *
 from tkinterhelper import *
 from google_sheets_intergration_minesweeper import *
 import os
